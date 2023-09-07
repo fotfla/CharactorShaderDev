@@ -185,6 +185,12 @@
         "com.unity.textmeshpro": "2.1.6"
       }
     },
+    "fotfla": {
+      "version": "file:F:/Users/VRChat/UdonProject/jp.fotfla",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "jp.lilxyzw.liltoon": {
       "version": "file:jp.lilxyzw.liltoon",
       "depth": 0,
