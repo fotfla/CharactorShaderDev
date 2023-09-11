@@ -294,11 +294,11 @@ Material:
     - _AudioLinkVertexUVMode: 1
     - _BackfaceForceShadow: 0
     - _BacklightBackfaceMask: 1
-    - _BacklightBlur: 0.05
-    - _BacklightBorder: 0.35
+    - _BacklightBlur: 0
+    - _BacklightBorder: 0.041999996
     - _BacklightDirectivity: 5
-    - _BacklightMainStrength: 0
-    - _BacklightNormalStrength: 1
+    - _BacklightMainStrength: 0.637
+    - _BacklightNormalStrength: 0.073
     - _BacklightReceiveShadow: 1
     - _BacklightViewStrength: 1
     - _BeforeExposureLimit: 10000
@@ -523,14 +523,14 @@ Material:
     - _RimApplyTransparency: 1
     - _RimBackfaceMask: 1
     - _RimBlendMode: 1
-    - _RimBlur: 0.65
+    - _RimBlur: 0
     - _RimBorder: 0.5
-    - _RimDirRange: 0
+    - _RimDirRange: 0.376
     - _RimDirStrength: 1
     - _RimEnableLighting: 1
     - _RimFresnelPower: 3.5
-    - _RimIndirBlur: 0.1
-    - _RimIndirBorder: 0.5
+    - _RimIndirBlur: 0.24
+    - _RimIndirBorder: 1
     - _RimIndirRange: 0
     - _RimMainStrength: 0
     - _RimNormalStrength: 1
@@ -544,7 +544,7 @@ Material:
     - _Shadow3rdBorder: 0.25
     - _Shadow3rdNormalStrength: 1
     - _Shadow3rdReceive: 0
-    - _ShadowBlur: 0.266
+    - _ShadowBlur: 0
     - _ShadowBlurMaskLOD: 0
     - _ShadowBorder: 0.5
     - _ShadowBorderMaskLOD: 0
@@ -588,7 +588,7 @@ Material:
     - _UVSec: 0
     - _UseAnisotropy: 0
     - _UseAudioLink: 0
-    - _UseBacklight: 0
+    - _UseBacklight: 1
     - _UseBump2ndMap: 0
     - _UseBumpMap: 0
     - _UseClippingCanceller: 0
@@ -628,8 +628,8 @@ Material:
     - _AudioLinkVertexUVParams: {r: 0.25, g: 0, b: 0, a: 0.125}
     - _BackfaceColor: {r: 0, g: 0, b: 0, a: 0}
     - _BacklightColor: {r: 0.85, g: 0.8, b: 0.7, a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.34, g: 0.34, b: 0.34, a: 1}
+    - _Color: {r: 0.34, g: 0.34, b: 0.34, a: 1}
     - _Color2nd: {r: 1, g: 1, b: 1, a: 1}
     - _Color3rd: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
@@ -683,7 +683,7 @@ Material:
     - _ReflectionCubeColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.65999997, g: 0.5, b: 0.47999996, a: 1}
     - _RimIndirColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Shadow2ndColor: {r: 0.68, g: 0.65999997, b: 0.78999996, a: 1}
+    - _Shadow2ndColor: {r: 0.68, g: 0.65999997, b: 0.78999996, a: 0}
     - _Shadow3rdColor: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowAOShift: {r: 1, g: 0, b: 1, a: 0}
     - _ShadowAOShift2: {r: 1, g: 0, b: 1, a: 0}

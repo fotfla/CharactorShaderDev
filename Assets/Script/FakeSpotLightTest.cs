@@ -6,16 +6,15 @@ using VRC.Udon;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
 [RequireComponent(typeof(Light))]
+
 public class FakeSpotLightTest : UdonSharpBehaviour
 {
     Light spotLight;
 
-    private int PosProp;
-    private int DirProp;
-    private int AngleProp;
-    private int RangeProp;
-    private int ColorProp;
-    private int FalloffProp;
+    private int PosProp = VRCShader.PropertyToID("_UdonLightPos");
+    private int DirProp = VRCShader.PropertyToID("_UdonLightDir");
+    private int LightDataProp = VRCShader.PropertyToID("_UdonLightData");
+    private int ColorProp = VRCShader.PropertyToID("_UdonLightColor");
 
     private void Start()
     {
@@ -23,8 +22,7 @@ public class FakeSpotLightTest : UdonSharpBehaviour
 
         PosProp = VRCShader.PropertyToID("_UdonLightPos");
         DirProp = VRCShader.PropertyToID("_UdonLightDir");
-        AngleProp = VRCShader.PropertyToID("_UdonSpotAngle");
-        RangeProp = VRCShader.PropertyToID("_UdonLightRange");
+        LightDataProp = VRCShader.PropertyToID("_UdonLightData");
         ColorProp = VRCShader.PropertyToID("_UdonLightColor");
     }
 
@@ -32,8 +30,7 @@ public class FakeSpotLightTest : UdonSharpBehaviour
     {
         VRCShader.SetGlobalVector(PosProp, transform.position);
         VRCShader.SetGlobalVector(DirProp, transform.forward);
-        VRCShader.SetGlobalFloat(RangeProp, spotLight.range);
-        VRCShader.SetGlobalFloat(AngleProp, Mathf.Cos(spotLight.spotAngle * Mathf.Deg2Rad * 0.5f));
-        VRCShader.SetGlobalColor(ColorProp, new Color(spotLight.color.r, spotLight.color.b, spotLight.color.g, spotLight.intensity));
+        VRCShader.SetGlobalVector(LightDataProp, new Vector3(spotLight.range, Mathf.Cos(spotLight.spotAngle * Mathf.Deg2Rad * 0.5f), spotLight.intensity));
+        VRCShader.SetGlobalColor(ColorProp, spotLight.color);
     }
 }

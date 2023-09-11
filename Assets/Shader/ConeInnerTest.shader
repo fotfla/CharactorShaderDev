@@ -42,8 +42,7 @@
 
             float3 _UdonLightDir;
             float3 _UdonLightPos;
-            float _UdonSpotAngle;
-            float _UdonLightRange;
+            float4 _UdonLightData;
             float4 _UdonLightColor;
 
             float3 FakeSpotLight(float3 worldPos, float3 worldNormal){
@@ -51,11 +50,35 @@
                 float distance = length(diff);
                 float3 dir = normalize(diff);
                 float angle = dot(dir, _UdonLightDir);
-                if(distance > _UdonLightRange || angle < _UdonSpotAngle) return 0;
+                if(distance > _UdonLightData.x || angle < _UdonLightData.y) return 0;
                 float atten = 1 / (distance + 0.0001);
-                float ndl =saturate(dot(-dir, worldNormal));
-                float falloff = smoothstep(_UdonSpotAngle, 1, angle);
-                return atten * falloff *  ndl * _UdonLightColor.rgb * _UdonLightColor.a;
+                float ndl = saturate(dot(-dir, worldNormal));
+                float falloff = smoothstep(_UdonLightData.y, 1, angle);
+                return atten * falloff *  ndl * _UdonLightColor.rgb * _UdonLightColor.a * _UdonLightData.z;
+            }
+
+            static const int maxCount = 8;
+            float4x4 _UdonSpotLightData[maxCount];
+
+             float3 FakeSpotLight(float3 worldPos, float3 worldNormal, int index){
+                float3 diff = worldPos - _UdonSpotLightData[index][0].xyz;
+                float distance = length(diff);
+                float3 dir = normalize(diff);
+                float angle = dot(dir,  _UdonSpotLightData[index][1].xyz);
+                if(distance >  _UdonSpotLightData[index][2].x || angle <  _UdonSpotLightData[index][2].y) return 0;
+                float atten = 1 / (distance + 0.0001);
+                float ndl = saturate(dot(-dir, worldNormal));
+                float falloff = smoothstep( _UdonSpotLightData[index][2].y, 1, angle);
+                return atten * falloff *  ndl * _UdonSpotLightData[index][3].rgb * _UdonSpotLightData[index][3].a *  _UdonSpotLightData[index][2].z;
+            }
+
+            float3 FakeSpotLights(float3 worldPos, float3 worldNormal){
+                float3 c = 0;
+                [unroll]
+                for(int i = 0; i < maxCount; i ++){
+                    c += FakeSpotLight(worldPos, worldNormal, i);
+                }
+                return c;
             }
 
             v2f vert (appdata v)
@@ -73,7 +96,7 @@
             {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv) * _Color;
-                col.rgb += FakeSpotLight(i.worldPos, i.normal);
+                col.rgb += FakeSpotLights(i.worldPos, i.normal);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
