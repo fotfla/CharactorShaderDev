@@ -40,17 +40,20 @@
 			struct appdata
 			{
 				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
+
+				 UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct v2f
 			{
-				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
 				float3 worldPos : TEXCOORD1;
 				float4 localPos : TEXCOORD2;
 				float4 screenPos : TEXCOORD3;
 				float3 ray : TEXCOORD4;
+				
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			struct Ray{
@@ -86,8 +89,11 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
 				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
 				o.localPos = v.vertex;
 				o.worldPos = mul(unity_ObjectToWorld,v.vertex);
 				o.screenPos = ComputeScreenPos(o.vertex);
@@ -245,6 +251,9 @@
 
 			FragOut frag (v2f vert, fixed facing : VFACE)
 			{
+				UNITY_SETUP_INSTANCE_ID(i);
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+
 				fixed4 col = fixed4(0,0,0,1);
 
 				float3 scale = float3(length(UNITY_MATRIX_M[0].xyz), length(UNITY_MATRIX_M[1].xyz), length(UNITY_MATRIX_M[2].xyz));

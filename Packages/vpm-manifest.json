@@ -27,13 +27,13 @@
       }
     },
     "com.vrchat.worlds": {
-      "version": "3.3.0-beta.1",
+      "version": "3.3.0",
       "dependencies": {
-        "com.vrchat.base": "3.3.0-beta.1"
+        "com.vrchat.base": "3.3.0"
       }
     },
     "com.vrchat.base": {
-      "version": "3.3.0-beta.1",
+      "version": "3.3.0",
       "dependencies": {}
     },
     "com.vrchat.clientsim": {
@@ -47,7 +47,7 @@
       "dependencies": {}
     },
     "jp.lilxyzw.liltoon": {
-      "version": "1.4.0",
+      "version": "1.4.1",
       "dependencies": {}
     }
   }

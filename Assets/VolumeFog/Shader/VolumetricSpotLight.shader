@@ -99,7 +99,7 @@
 				#endif
 				float z = x/far;
 				float w = y/far; 
-				return 1.0/(x * depth + y);
+				return 1.0 / (x * depth + y);
 			}
 
             float map(float3 p){
