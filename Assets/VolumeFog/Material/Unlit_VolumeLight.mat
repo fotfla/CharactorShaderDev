@@ -28,14 +28,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Attenuation: 0.95
+    - _Attenuation: 0.97
     - _DepthIntensity: 1
     - _EndHeightAspect: 0.001
     - _EndWidthAspect: 0.001
     - _Far: 20
     - _HeightAspect: 1
     - _HeightOffset: 0.841
-    - _Intensity: 1.54
+    - _Intensity: 2.56
     - _JitterIntensity: 0.07
     - _Near: 0.3
     - _WidthAspect: 1

@@ -5,7 +5,6 @@
         _DepthTex("Depth", 2D) = "black"{}
         _Intensity("Intensity",float) = 1.0
 		_JitterIntensity("Jitter Intensity",float) = 0.001
-		_Attenuation("Attenuation",float) = 0.25
 
 		_Near("Near", float) = 0.3
 		_Far("Far", float) = 20
@@ -16,8 +15,8 @@
 	    Tags{"RenderType"="Transparent" "Queue"="Transparent+100"}
         Cull Off
 		ZWrite Off
-		Blend SrcAlpha One
-
+		//Blend SrcAlpha One
+		Blend DstColor Zero
 
         Pass
         {
@@ -97,7 +96,11 @@
 
             float Linear01DepthFromCamera(float depth){
                 float y = _Far / _Near;
-                float x = -1 + y;
+                float x = 1 - _Far / _Near;
+				#if defined(UNITY_REVERSED_Z)
+				y = 1;
+				x = - 1 + _Far/_Near;
+				#endif
                 return 1.0 / (x * depth + y);
              }
 
@@ -107,15 +110,12 @@
                 float2 uv = saturate(pos.xy  / _Size * 0.5 + 0.5);
                 float depth = SAMPLE_DEPTH_TEXTURE(_DepthTex, uv);
 				float z = 1 - (pos.z - _Near) / (_Far - _Near);
-                depth = depth > z ? 0.0 : 1.0;
-
-				depth *= pow(0.5 + p.y, _Attenuation);
-				float n = fbm(p - _Time.y * float3(0.1,0.5,0.2)) * 0.3 + 0.7;
-				return _Intensity * depth * n;
+                depth = depth < z ? 0.0 : 1.0;
+				return _Intensity * depth;
 			}
 
 			float4 fogColor(float3 p){
-				return float4(1,1,1,1);
+				return 1;
 		    }
 
             float4 trace(Ray ray){
@@ -213,11 +213,13 @@
 				alignment(ray,rd);
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, vert.screenPos.xy / vert.screenPos.w));
-				float tmax2 = length(ray.origin - localize(depth * rd + worldOrigin));
+				float tmax2 = length(ray.origin - localize(depth * normalize(rd) + _WorldSpaceCameraPos));
 				ray.tmax = min(ray.tmax, tmax2);
 			
-				float4 a = trace(ray);
-				col = a;
+				col = trace(ray);
+				col.rgb = 1 - col.rgb;
+
+
                 return col;
             }
             ENDCG

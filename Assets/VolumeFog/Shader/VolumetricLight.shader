@@ -146,10 +146,10 @@
 				float far = _Far;
 				float near = _Near;
 				float y = far/near;
-				float x = -1 + far/near; 
+				float x = 1 - far/near; 
 				#if defined(UNITY_REVERSED_Z)
 				  y = 1;
-				  x = 66;
+				  x = -1 + far/near;
 				#endif
 				float z = x/far;
 				float w = y/far; 
@@ -157,14 +157,12 @@
 			}
 
 			float map(float3 p){
-				float edge = smoothstep(1.0,1 - _WidthOffset,p.x + 0.5) * smoothstep(0.0,_WidthOffset,p.x + 0.5) * smoothstep(1.0,1.0 - _HeightOffset,p.z + 0.5) * smoothstep(0.0,_HeightOffset,p.z + 0.5);
-				float z = saturate(.5 - p.y);
-				float2 uv = (float2(p.x, p.z))/(z + 0.01) + 0.5;
-				uv = saturate(uv);
+				float z = saturate(0.5 - p.y);
+				float2 uv = (p.xz)/(z + 0.001) + 0.5;
 				float depth = Linear01Depth02(SAMPLE_DEPTH_TEXTURE(_DepthTex, uv));
-
-				depth = depth < z ? 0.0 : 1.0;
-				depth *= pow(0.5 + p.y, _Attenuation);
+				depth = depth < 0.5 - p.y ? 0.0 : 1.0;
+				if(uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1) depth = 0;
+				depth *= pow(saturate(0.5 + p.y), _Attenuation);
 				float n = fbm(p * 5.0 - _Time.y * float3(0.1,0.5,0.2)) * 0.3 + 0.7;
 				return _Intensity * depth * n;
 			}
@@ -193,9 +191,8 @@
 			float4 trace(Ray ray){
 				float3 ro = ray.origin;
 				float jitter = rnd(ro) * _JitterIntensity;
-				float3 lstep = ray.dir * ray.tmax /(float)ITERATION * (1 - jitter);
+				float3 lstep = (ray.dir * ray.tmax / (float)ITERATION) * (1 - jitter);
 				float t = 0.0;
-				float4 color;
 				float4 output = float4(0,0,0,0);
 				float d = 0;
 				[unroll]
@@ -249,7 +246,7 @@
 				return _ProjectionParams.y / n.z;
 		    }
 
-			FragOut frag (v2f vert, fixed facing : VFACE)
+			fixed4 frag (v2f vert, fixed facing : VFACE) : SV_Target
 			{
 				UNITY_SETUP_INSTANCE_ID(i);
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
@@ -282,18 +279,17 @@
 				intersection(ray);
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, vert.screenPos.xy / vert.screenPos.w));
-				float tmax2 = length(ray.origin - localize(depth * rd + worldOrigin));
+				float tmax2 = length(ray.origin - localize(depth * normalize(rd) + _WorldSpaceCameraPos));
 				ray.tmax = min(ray.tmax, tmax2);
 				
 				float4 a = trace(ray);
-				if((a.x < 0.001 || a.x < 0.001 || a.z < 0.001) &&  a.w >= 0) clip(-1);
 				col = a;
-
-				FragOut o;
-				o.color = col;
-				float4 p = UnityObjectToClipPos(float4(ray.tmin * ray.dir,1));
+				return col;
+				//FragOut o;
+				//o.color = col;
+				//float4 p = UnityObjectToClipPos(float4(ray.tmin * ray.dir,1));
                 //o.depth = p.z/p.w;
-				return o;
+				//return o;
 			}
 			ENDCG
 		}
