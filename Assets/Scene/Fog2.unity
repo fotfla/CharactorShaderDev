@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 588918908}
   - component: {fileID: 588918904}
   m_Layer: 21
-  m_Name: Quad
+  m_Name: VolumeShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

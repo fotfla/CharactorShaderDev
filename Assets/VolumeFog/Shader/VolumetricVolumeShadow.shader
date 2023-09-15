@@ -1,4 +1,4 @@
-﻿Shader "Unlit/VolumetricLightShaft"
+﻿Shader "Unlit/VolumetricVolumeShadow"
 {
     Properties
     {
@@ -16,7 +16,8 @@
         Cull Off
 		ZWrite Off
 		ZTest Always
-		Blend SrcAlpha One
+		//Blend SrcAlpha One
+		Blend DstColor Zero
 
         Pass
         {
@@ -109,7 +110,7 @@
                 float2 uv = saturate(pos.xy  / _Size * 0.5 + 0.5);
                 float depth = SAMPLE_DEPTH_TEXTURE_LOD(_DepthTex, float4(uv, 0, 3));
 				float z = 1 - (pos.z - _Near) / (_Far - _Near);
-                depth = depth > z ? 0.0 : 1.0;
+                depth = depth < z ? 0.0 : 1.0;
 				return _Intensity * depth;
 			}
 
@@ -216,6 +217,7 @@
 				ray.tmax = min(ray.tmax, tmax2);
 			
 				col = trace(ray);
+				col.rgb = 1 - col.rgb;
 
                 return col;
             }

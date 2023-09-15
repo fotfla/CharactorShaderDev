@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_ScreenSpaceLightShaft
+  m_Name: ShadowVolume
   m_Shader: {fileID: 4800000, guid: 8ff1e1d93485e2f46862de14175d75f0, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
