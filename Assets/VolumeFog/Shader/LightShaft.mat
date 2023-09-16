@@ -30,7 +30,7 @@ Material:
     m_Floats:
     - _Attenuation: 0.01
     - _Far: 50
-    - _Intensity: 1.25
+    - _Intensity: 0.15
     - _JitterIntensity: 0.01
     - _Near: 0.3
     - _Size: 10
