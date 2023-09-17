@@ -317,12 +317,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174651263}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.032, y: -1.4316959, z: -0.07221019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 905066968}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &313572398
 GameObject:
@@ -448,7 +448,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 505225128}
   spotlight: {fileID: 505225130}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &505225130
 Light:
   m_ObjectHideFlags: 0
@@ -522,7 +522,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &506953889
 GameObject:
@@ -805,7 +805,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 673323506}
   spotlight: {fileID: 673323508}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &673323508
 Light:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &748173542
 GameObject:
@@ -949,7 +949,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 748173543}
   spotlight: {fileID: 748173545}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &748173545
 Light:
   m_ObjectHideFlags: 0
@@ -1023,7 +1023,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &889639565
 GameObject:
@@ -1183,7 +1183,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.968, y: 1.4316959, z: 0.07221019}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 174651267}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1600,7 +1601,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1546474220}
   spotlight: {fileID: 1546474222}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &1546474222
 Light:
   m_ObjectHideFlags: 0
@@ -1674,7 +1675,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1625665302
 GameObject:
@@ -1718,7 +1719,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1678936243
 GameObject:
@@ -1788,7 +1789,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1678936244}
   spotlight: {fileID: 1678936246}
-  coneMesh: {fileID: 530713193}
+  coneObj: {fileID: 530713193}
 --- !u!108 &1678936246
 Light:
   m_ObjectHideFlags: 0
@@ -1863,7 +1864,7 @@ Transform:
   m_Children:
   - {fileID: 530713196}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1758629827
 GameObject:
@@ -2162,7 +2163,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1912230351}
   spotlight: {fileID: 1912230353}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &1912230353
 Light:
   m_ObjectHideFlags: 0
@@ -2236,7 +2237,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1957790662
 GameObject:
@@ -2306,7 +2307,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1957790663}
   spotlight: {fileID: 1957790665}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &1957790665
 Light:
   m_ObjectHideFlags: 0
@@ -2380,7 +2381,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &2145919636
 GameObject:
@@ -2450,7 +2451,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2145919637}
   spotlight: {fileID: 2145919639}
-  coneMesh: {fileID: 0}
+  coneObj: {fileID: 0}
 --- !u!108 &2145919639
 Light:
   m_ObjectHideFlags: 0
@@ -2524,5 +2525,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
