@@ -10,6 +10,23 @@ public class FakeSpotLightComponent : UdonSharpBehaviour
 {
     [SerializeField]
     Light spotlight;
+    [SerializeField]
+    GameObject coneObj;
+
+    Material material;
+
+    private void Start()
+    {
+        material = coneObj.GetComponent<MeshRenderer>().material;
+    }
+
+    private void Update()
+    {
+        var z = spotlight.range;
+        var x = Mathf.Tan(Mathf.Deg2Rad * spotlight.spotAngle * 0.5f) * z * 2;
+        coneObj.transform.localScale = new Vector3(x, x, z);
+        material.SetColor("_Color", spotlight.color);
+    }
 
     private void OnEnable()
     {
@@ -51,6 +68,11 @@ public class FakeSpotLightComponent : UdonSharpBehaviour
         if (spotlight == null)
         {
             spotlight = GetComponent<Light>();
+        }
+
+        if (coneObj == null)
+        {
+            coneObj = GetComponentInChildren<MeshFilter>().gameObject;
         }
     }
 }

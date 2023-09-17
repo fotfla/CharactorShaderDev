@@ -448,6 +448,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 505225128}
   spotlight: {fileID: 505225130}
+  coneMesh: {fileID: 0}
 --- !u!108 &505225130
 Light:
   m_ObjectHideFlags: 0
@@ -615,6 +616,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &530713193 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fb522059d8a5a804db778d2bdd46478a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1244267979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &530713196 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1244267979}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &563582326
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,6 +805,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 673323506}
   spotlight: {fileID: 673323508}
+  coneMesh: {fileID: 0}
 --- !u!108 &673323508
 Light:
   m_ObjectHideFlags: 0
@@ -935,6 +949,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 748173543}
   spotlight: {fileID: 748173545}
+  coneMesh: {fileID: 0}
 --- !u!108 &748173545
 Light:
   m_ObjectHideFlags: 0
@@ -1329,6 +1344,100 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1083218094}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1244267979
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1678936247}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000007223116
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.000000011087194
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.000000119209275
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3be54a185b6e7e54896c02255139e311, type: 2}
+    - target: {fileID: 919132149155446097, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_Name
+      value: Cone
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fb522059d8a5a804db778d2bdd46478a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fb522059d8a5a804db778d2bdd46478a, type: 3}
 --- !u!1 &1491119568
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1600,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1546474220}
   spotlight: {fileID: 1546474222}
+  coneMesh: {fileID: 0}
 --- !u!108 &1546474222
 Light:
   m_ObjectHideFlags: 0
@@ -1678,6 +1788,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1678936244}
   spotlight: {fileID: 1678936246}
+  coneMesh: {fileID: 530713193}
 --- !u!108 &1678936246
 Light:
   m_ObjectHideFlags: 0
@@ -1692,7 +1803,7 @@ Light:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
-  m_SpotAngle: 30
+  m_SpotAngle: 43.685097
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -1727,7 +1838,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4194101
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -1749,7 +1860,8 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.61, y: 3, z: -1.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 530713196}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
@@ -2050,6 +2162,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1912230351}
   spotlight: {fileID: 1912230353}
+  coneMesh: {fileID: 0}
 --- !u!108 &1912230353
 Light:
   m_ObjectHideFlags: 0
@@ -2193,6 +2306,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1957790663}
   spotlight: {fileID: 1957790665}
+  coneMesh: {fileID: 0}
 --- !u!108 &1957790665
 Light:
   m_ObjectHideFlags: 0
@@ -2336,6 +2450,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 2145919637}
   spotlight: {fileID: 2145919639}
+  coneMesh: {fileID: 0}
 --- !u!108 &2145919639
 Light:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Light))]
-public class FakeSpotLightComponentA : MonoBehaviour
+public class FakeSpotLightComponentInEditor : MonoBehaviour
 {
     Light spotlight;
 
