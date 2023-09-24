@@ -44,9 +44,8 @@
                 float4 vertex : SV_POSITION;
                 float3 worldPos : TEXCOORD2;
                 float4 screenPos : TEXCOORD3;
-                float3 viewDir : TEXCOORD4;
                 float3 normal : NORMAL;
-                float3 localPos : TEXCOORD5;
+                float3 localPos : TEXCOORD4;
             };
 
             UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
@@ -81,8 +80,6 @@
                 o.screenPos = ComputeScreenPos(o.vertex);
                 float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
                 o.worldPos = worldPos;
-                // o.viewDir = normalize(UnityWorldSpaceViewDir(worldPos));
-                // o.normal = UnityObjectToWorldNormal(v.normal);
                 o.normal = v.normal;
                 o.localPos = v.vertex;
                 COMPUTE_EYEDEPTH(o.screenPos.z);
@@ -102,22 +99,16 @@
                 float fade = saturate(_Fade * (depth - z));
                 col *= fade;
 
-                float h = saturate(1 + i.localPos.z);
-                // col *= h * h;
+                float h = saturate(1 + i.localPos.y);
+                col *= h * h;
 
                 float3 scale = float3(length(UNITY_MATRIX_M[0].xyz), length(UNITY_MATRIX_M[1].xyz), length(UNITY_MATRIX_M[2].xyz));
                 float3 normal = normalize(i.normal) / scale;
-                // normal.xz *= 0;
-               
                           
                 float3 localViewDir =  normalize(normalize(mul((float3x3)unity_ObjectToWorld, (_WorldSpaceCameraPos - i.worldPos)) / scale));
                 float vdn = max(0, dot(normalize(normal), normalize(localViewDir)));
                 col *= pow(vdn, _Power);
 
-                // col.rgb = normalize(normal);
-                // col.rgb = localViewDir;
-
-                col.a = 1;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
