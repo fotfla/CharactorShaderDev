@@ -24,8 +24,9 @@ public class FakeSpotLightComponent : UdonSharpBehaviour
     {
         var z = spotlight.range;
         var x = Mathf.Tan(Mathf.Deg2Rad * spotlight.spotAngle * 0.5f) * z * 2;
-        coneObj.transform.localScale = new Vector3(x, x, z);
+        coneObj.transform.localScale = new Vector3(x, z, x);
         material.SetColor("_Color", spotlight.color);
+        material.SetFloat("_LightIntensity", spotlight.intensity);
     }
 
     private void OnEnable()
