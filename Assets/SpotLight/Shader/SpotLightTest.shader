@@ -17,6 +17,8 @@
 
         #pragma target 3.0
 
+        #include "FakeLight.hlsl"
+
         sampler2D _MainTex;
 
         struct Input
@@ -28,30 +30,6 @@
         half _Glossiness;
         half _Metallic;
         fixed4 _Color;
-
-        static const int maxCount = 8;
-        float4x4 _UdonSpotLightData[maxCount];
-
-        float3 FakeSpotLight(float3 worldPos, float3 worldNormal, int index){
-            float3 diff = worldPos - _UdonSpotLightData[index][0].xyz;
-            float distance = length(diff);
-            float3 dir = normalize(diff);
-            float angle = dot(dir,  _UdonSpotLightData[index][1].xyz);
-            if(distance >  _UdonSpotLightData[index][2].x || angle <  _UdonSpotLightData[index][2].y) return 0;
-            float atten = 1 / (distance + 0.0001);
-            float ndl = saturate(dot(-dir, worldNormal));
-            float falloff = smoothstep( _UdonSpotLightData[index][2].y, 1, angle);
-            return atten * falloff *  ndl * _UdonSpotLightData[index][3].rgb * _UdonSpotLightData[index][3].a *  _UdonSpotLightData[index][2].z;
-        }
-
-        float3 FakeSpotLights(float3 worldPos, float3 worldNormal){
-            float3 c = 0;
-            [unroll]
-            for(int i = 0; i < maxCount; i ++){
-                c += FakeSpotLight(worldPos, worldNormal, i);
-            }
-            return c;
-        }
 
         UNITY_INSTANCING_BUFFER_START(Props)
         UNITY_INSTANCING_BUFFER_END(Props)

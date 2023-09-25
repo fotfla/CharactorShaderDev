@@ -20,7 +20,7 @@
         Tags { "RenderType"="Transparent" "Queue"="Transparent" "DisableBatching"="True"}
         LOD 100
         ZWrite Off
-        // Blend SrcAlpha OneMinusSrcAlphak
+        // Blend SrcAlpha OneMinusSrcAlpha
         Blend One One
 
         Pass
@@ -63,15 +63,6 @@
 
             float _Power;
 
-            float3x3 Inverse(float3x3 m)
-            {
-                return 1.0 / determinant(m) *
-                    float3x3(
-                       m._22 * m._33 - m._23 * m._32,       -(m._12 * m._33 - m._13 * m._32),       m._12 * m._23 - m._13 * m._22,
-                    -(m._21 * m._33 - m._23 * m._31),    m._11 * m._33 - m._13 * m._31,          -(m._11 * m._23 - m._13 * m._21),
-                      m._21 * m._32 - m._22 * m._31,       -(m._11 * m._32 - m._12 * m._31),       m._11 * m._22 - m._12 * m._21);
-             }
-
             v2f vert (appdata v)
             {
                 v2f o;
@@ -89,7 +80,6 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
                 fixed4 col = _Color * _LightIntensity * _Intensity;
                 float n = tex3D(_NoiseTex, i.worldPos * _NoiseScale + float3(0,- _Time.y *_NoiseSpeed,0)).r;
                 col *= lerp(1, n, _NoiseIntensity);
@@ -109,7 +99,6 @@
                 float vdn = max(0, dot(normalize(normal), normalize(localViewDir)));
                 col *= pow(vdn, _Power);
 
-                // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
