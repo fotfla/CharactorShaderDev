@@ -34,6 +34,6 @@ Material:
     - _NoiseIntensity: 1
     - _NoiseScale: 0.1
     - _NoiseSpeed: 0.01
-    - _Power: 4
+    - _Power: 2.46
     m_Colors:
     - _Color: {r: 1.4980392, g: 1.4980392, b: 1.4980392, a: 1}

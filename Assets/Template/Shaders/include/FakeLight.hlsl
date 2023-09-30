@@ -18,6 +18,7 @@ float3 FakeSpotLight(float3 worldPos, float3 worldNormal, int index)
     float angle = dot(dir, _UdonSpotLightData[index][1].xyz);
     if (distance > _UdonSpotLightData[index][2].x || angle < _UdonSpotLightData[index][2].y)
         return 0;
+    
     float atten = 1 / (distance + 0.0001);
     float ndl = saturate(dot(-dir, worldNormal));
     float falloff = smoothstep(_UdonSpotLightData[index][2].y, 1, angle);
@@ -27,7 +28,7 @@ float3 FakeSpotLight(float3 worldPos, float3 worldNormal, int index)
 float3 FakeSpotLights(float3 worldPos, float3 worldNormal)
 {
     float3 c = 0;
-            [unroll]
+    [unroll]
     for (int i = 0; i < maxCount; i++)
     {
         c += FakeSpotLight(worldPos, worldNormal, i);
