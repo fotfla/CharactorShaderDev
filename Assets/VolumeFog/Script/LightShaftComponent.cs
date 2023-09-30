@@ -15,10 +15,7 @@ public class LightShaftComponent : UdonSharpBehaviour
     private void Start()
     {
         material = GetComponent<MeshRenderer>().material;
-    }
 
-    private void Update()
-    {
         material.SetMatrix("_DepthCameraWorldToObject", depthCamera.transform.worldToLocalMatrix);
         material.SetFloat("_Size", depthCamera.orthographicSize);
         material.SetFloat("_Far", depthCamera.farClipPlane);

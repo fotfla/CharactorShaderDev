@@ -29,10 +29,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Attenuation: 0.01
-    - _Far: 50
-    - _Intensity: 0.15
-    - _JitterIntensity: 0.01
+    - _Far: 20
+    - _Intensity: 0.3
+    - _JitterIntensity: 0.05
     - _Near: 0.3
-    - _Size: 10
+    - _NoiseIntensity: 1
+    - _NoiseScale: 1
+    - _NoiseSpeed: 0.01
+    - _Size: 5
     - _StepDist: 0.01
-    m_Colors: []
+    m_Colors:
+    - _FogColor: {r: 1, g: 1, b: 1, a: 1}

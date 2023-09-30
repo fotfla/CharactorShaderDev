@@ -1,14 +1,21 @@
 ﻿Shader "Unlit/VolumetricLightShaft"
 {
     Properties
-    {
-        _DepthTex("Depth", 2D) = "black"{}
+    {        
         _Intensity("Intensity",float) = 1.0
-		_JitterIntensity("Jitter Intensity",float) = 0.001
 
-		_Near("Near", float) = 0.3
-		_Far("Far", float) = 20
-		_Size("Size", float) = 10
+		_FogColor("Fog Color", Color) = (1,1,1,1)
+		_NoiseTex("Noise Texture", 3D) = "white"{}
+		_NoiseIntensity("Noise Intensity", Range(0,1)) = 1
+		_NoiseScale("Noise Scale", float) = 1
+		_NoiseSpeed("Noise Speed",float) = 0.01
+
+		_DepthTex("Depth", 2D) = "black"{}
+		_JitterIntensity("Jitter Intensity",float) = 0.05
+
+		[HideInInspector] _Near("Near", float) = 0.3
+		[HideInInspector] _Far("Far", float) = 20
+		[HideInInspector] _Size("Size", float) = 10
     }
     SubShader
     {
@@ -28,11 +35,12 @@
             #define ITERATION 64
 
             #include "UnityCG.cginc"
-            #include "NoiseShader/HLSL/SimplexNoise3D.hlsl"
 
             struct appdata
             {
                 float4 vertex : POSITION;
+
+				UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
@@ -41,6 +49,10 @@
 				float3 worldPos : TEXCOORD1;
 				float4 localPos : TEXCOORD2;
 				float4 screenPos : TEXCOORD3;
+				float3 ray : TEXCOORD4;
+
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
             };
 
 			struct Ray{
@@ -60,29 +72,20 @@
              float _Near;
 			 float _Size;
 
+			 float4 _FogColor;
+			
+			 sampler3D _NoiseTex;
+			 float _NoiseIntensity;
+			 float _NoiseScale;
+			 float _NoiseSpeed;
+
 			float3 _Offset;
 			float _JitterIntensity;
 			float _Intensity;
 			float _Attenuation;
 
 			float2x2 rot(float a){
-				float c = cos(a),s = sin(a);
-				return float2x2(c,s,-s,c);
-			}
-
-            float fbm(float3 p){
-				float a = 1.25;
-				float n = 0;
-
-				[unroll]
-				for(int i = 0;i < 3;i++){
-					n += a * snoise(p);
-					a *= 0.25;
-					p *= 1.5;
-					p.xy = mul(rot(UNITY_PI * 0.6),p.xy);
-				}
-
-				return n;
+				return float2x2(cos(a),sin(a),-sin(a),cos(a));
 			}
 
 			inline float3 localize(float3 vec){
@@ -114,7 +117,12 @@
 			}
 
 			float4 fogColor(float3 p){
-				return 1;
+				float n = 1;
+				if(_NoiseIntensity > 0){
+					n = tex3D(_NoiseTex, frac(p * _NoiseScale + float3(0, -_Time.y * _NoiseSpeed, 0))).r;
+					n = lerp(1, n, _NoiseIntensity);
+				}
+				return n  * _FogColor;
 		    }
 
             float4 trace(Ray ray){
@@ -153,7 +161,7 @@
 				return abs(pos.x) < scale.x * 0.5 && abs(pos.y) < scale.y * 0.5 && abs(pos.z) < scale.z * 0.5;
 			}
 
-			inline void alignment(inout Ray ray, float3 dir){
+			void alignment(inout Ray ray, float3 dir){
 				float3 forward = - UNITY_MATRIX_V[2].xyz;
 				float3 worldDir = normalize(dir);
 				float ratio = 1 / dot(worldDir,forward);
@@ -174,20 +182,33 @@
             v2f vert (appdata v)
             {
                 v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2f, o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
                 o.vertex = UnityObjectToClipPos(v.vertex);
 				o.localPos = v.vertex;
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 				o.screenPos = ComputeScreenPos(o.vertex);
+
+                float2 sp = o.screenPos.xy/o.screenPos.w;
+                #if UNITY_SINGLE_PASS_STEREO
+                    float4 scaleOffset = unity_StereoScaleOffset[unity_StereoEyeIndex];
+                    sp = (sp - scaleOffset.zw) / scaleOffset.xy;
+                #endif
+                sp = sp * 2.0 - 1.0;
+                float far = _ProjectionParams.z;
+                float3 clipVec = float3(sp.xy,1.0) * far;
+                o.ray = mul(unity_CameraInvProjection,clipVec.xyzz).xyz;
                 return o;
             }
 
             fixed4 frag (v2f vert, fixed facing : VFACE) : SV_Target
             {
-				float4 col = float4(0,0,0,0);
+				UNITY_SETUP_INSTANCE_ID(i);
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
 
-                Ray ray;
-				float3 rd = vert.worldPos - _WorldSpaceCameraPos;
-				ray.dir = normalize(localize(rd));
+				float4 col = float4(0,0,0,0);
 
 				float3 scale = float3(length(UNITY_MATRIX_M[0].xyz),length(UNITY_MATRIX_M[1].xyz),length(UNITY_MATRIX_M[2].xyz));
 				float3x3 rot = (float3x3)UNITY_MATRIX_M;
@@ -196,7 +217,11 @@
 				rot[2].xyz /= scale.z;
 
 				float3 pos = mul(unity_ObjectToWorld,float4(0,0,0,1)).xyz;
-				
+
+                Ray ray;
+				float3 rd = vert.worldPos - _WorldSpaceCameraPos;
+				ray.dir = normalize(localize(rd));
+
 				ray.origin = vert.localPos;
 				float3 worldOrigin = vert.worldPos;
 				float3 nearPlanePos = (_WorldSpaceCameraPos - pos)  + NearPlaneDistance(vert.screenPos) * normalize(rd);
@@ -213,9 +238,9 @@
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, vert.screenPos.xy / vert.screenPos.w));
 				float3 worldPos = depth * normalize(rd) / dot(normalize(rd),- UNITY_MATRIX_V[2].xyz) + _WorldSpaceCameraPos;
-				float tmax2 = length(ray.origin - mul(unity_WorldToObject, float4(worldPos,1)).xyz );
+				float tmax2 = length(ray.origin - mul(unity_WorldToObject, float4(worldPos,1)));
 				ray.tmax = min(ray.tmax, tmax2);
-			
+
 				col = trace(ray);
 
                 return col;
