@@ -1,4 +1,4 @@
-﻿Shader "Unlit/VolumeLight"
+﻿Shader "Volumetric/VolumetricSpotLight"
 {
 	Properties
 	{
@@ -279,17 +279,13 @@
 				intersection(ray);
 
 				float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, vert.screenPos.xy / vert.screenPos.w));
-				float tmax2 = length(ray.origin - localize(depth * normalize(rd) + _WorldSpaceCameraPos));
+				float3 worldPos = depth * normalize(rd) / dot(normalize(rd),- UNITY_MATRIX_V[2].xyz) + _WorldSpaceCameraPos;
+				float tmax2 = length(ray.origin - mul(unity_WorldToObject, float4(worldPos,1)));
 				ray.tmax = min(ray.tmax, tmax2);
 				
 				float4 a = trace(ray);
 				col = a;
 				return col;
-				//FragOut o;
-				//o.color = col;
-				//float4 p = UnityObjectToClipPos(float4(ray.tmin * ray.dir,1));
-                //o.depth = p.z/p.w;
-				//return o;
 			}
 			ENDCG
 		}

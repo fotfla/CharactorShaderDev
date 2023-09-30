@@ -1,4 +1,4 @@
-﻿Shader "Unlit/VolumetricLightShaft"
+﻿Shader "Volumetric/VolumetricLightShaft"
 {
     Properties
     {        
