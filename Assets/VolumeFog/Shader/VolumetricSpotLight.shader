@@ -7,6 +7,12 @@
 		_JitterIntensity("Jitter Intensity",float) = 0.001
 		_Attenuation("Attenuation",float) = 0.25
 
+		_NoiseTex("Noise Texture", 3D) = "white"{}
+		_NoiseIntensity("Noise Intensity", Range(0,1)) = 0.3
+		_NoiseScale("NoiseScale", float) = 1
+		_NoiseSpeed("Noise Speed", float) = 1
+
+
 		_WidthOffset("Width Edge Cut", Range(0.0,1.0)) = 0.05
 		_HeightOffset("Hight Edge Cut", Range(0.0,1.0)) = 0.05
 		_WidthAspect("Width Aspect",Range(0.001,1.0)) = 0.8
@@ -35,7 +41,6 @@
 			#define ITERATION 32
 			
 			#include "UnityCG.cginc"
-			#include "NoiseShader/HLSL/SimplexNoise3D.hlsl"
 
 			struct appdata
 			{
@@ -75,6 +80,11 @@
 			float _JitterIntensity;
 			float _Intensity;
 			float _Attenuation;
+
+			sampler3D _NoiseTex;
+            float _NoiseScale;
+            float _NoiseIntensity;
+            float _NoiseSpeed;
 
 			float _WidthOffset;
 			float _HeightOffset;
@@ -119,21 +129,6 @@
 				return float2x2(c,s,-s,c);
 			}
 
-            float fbm(float3 p){
-				float a = 1.25;
-				float n = 0;
-
-				[unroll]
-				for(int i = 0;i < 3;i++){
-					n += a * snoise(p);
-					a *= 0.25;
-					p *= 1.5;
-					p.xy = mul(rot(UNITY_PI * 0.6),p.xy);
-				}
-
-				return n;
-			}
-
 			inline float3 localize(float3 vec){
 				return mul(unity_WorldToObject, vec);
 			}
@@ -163,7 +158,8 @@
 				depth = depth < 0.5 - p.y ? 0.0 : 1.0;
 				if(uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1) depth = 0;
 				depth *= pow(saturate(0.5 + p.y), _Attenuation);
-				float n = fbm(p * 5.0 - _Time.y * float3(0.1,0.5,0.2)) * 0.3 + 0.7;
+				// float n = fbm(p * 5.0 - _Time.y * float3(0.1,0.5,0.2)) * 0.3 + 0.7;
+				float n = lerp(1, tex3D(_NoiseTex, p * _NoiseScale - _Time.y * _NoiseSpeed * float3(0,1,0)), _NoiseIntensity);
 				return _Intensity * depth * n;
 			}
 
@@ -195,7 +191,6 @@
 				float t = 0.0;
 				float4 output = float4(0,0,0,0);
 				float d = 0;
-				[unroll]
 				for(int i = 0; i < ITERATION; i++){
 					t = map(ro);
 					float4 color = spotColor(ro) * t;

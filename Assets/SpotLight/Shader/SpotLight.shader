@@ -94,8 +94,6 @@
                 float3 scale = float3(length(UNITY_MATRIX_M[0].xyz), length(UNITY_MATRIX_M[1].xyz), length(UNITY_MATRIX_M[2].xyz));
                 float3 normal = normalize(i.normal) / scale;
 
-
-
                 if(facing < 0){
                     float3 normalWS = UnityObjectToWorldNormal(i.normal);
                     float vdn0 = max(0, dot(-normalWS, normalize(_WorldSpaceCameraPos - i.worldPos)));

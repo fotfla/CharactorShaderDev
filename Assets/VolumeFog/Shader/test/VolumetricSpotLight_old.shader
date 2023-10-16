@@ -26,7 +26,6 @@
             #define ITERATION 32
 
             #include "UnityCG.cginc"
-            #include "NoiseShader/HLSL/SimplexNoise3D.hlsl"
 
             struct appdata
             {
@@ -65,21 +64,6 @@
 				return float2x2(c,s,-s,c);
 			}
 
-            float fbm(float3 p){
-				float a = 1.25;
-				float n = 0;
-
-				[unroll]
-				for(int i = 0;i < 3;i++){
-					n += a * snoise(p);
-					a *= 0.25;
-					p *= 1.5;
-					p.xy = mul(rot(UNITY_PI * 0.6),p.xy);
-				}
-
-				return n;
-			}
-
 			inline float3 localize(float3 vec){
 				return mul(unity_WorldToObject,vec);
 			}
@@ -100,19 +84,6 @@
 				float z = x/far;
 				float w = y/far; 
 				return 1.0 / (x * depth + y);
-			}
-
-            float map(float3 p){
-				float2 uv = p.xy / lerp(_Near, _Far,  (p.z - _Near) / (_Far - _Near));
-				uv.y += 0.5;
-				uv.x = 0.25 - uv.x;
-				uv = saturate(uv);
-				float depth = Linear01Depth02(SAMPLE_DEPTH_TEXTURE(_DepthTex, uv));
-
-				depth = depth < p.z ? 0.0 : 1.0;
-				depth *= pow(0.5 + p.y, _Attenuation);
-				float n = fbm(p * 5.0 - _Time.y * float3(0.1,0.5,0.2)) * 0.3 + 0.7;
-				return _Intensity * depth * n;
 			}
 
             float4 trace(Ray ray){

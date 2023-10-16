@@ -29,7 +29,6 @@ public class FakeSpotLightControllerInEditor : MonoBehaviour
         Shader.SetGlobalMatrixArray(LightDataProp, spotLightData);
 
         var mm = Shader.GetGlobalMatrixArray(LightDataProp);
-        Debug.Log(mm.Length);
     }
 }
 #endif

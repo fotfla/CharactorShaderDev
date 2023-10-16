@@ -20,7 +20,7 @@
         //ZWrite Off
         Blend SrcAlpha One
 
-        GrabPass{"_CameraColorTexture"}
+        // GrabPass{"_CameraColorTexture"}
 
         Pass
         {
@@ -43,7 +43,7 @@
              float _StepDist;
 
             UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
-            UNITY_DECLARE_SCREENSPACE_TEXTURE(_CameraColorTexture);
+            // UNITY_DECLARE_SCREENSPACE_TEXTURE(_CameraColorTexture);
 
             float _Size;
 
@@ -59,7 +59,6 @@
                 float4 vertex : SV_POSITION;
                 float3 worldPos : TEXCOORD2;
                 float4 screenPos : TEXCOORD0;
-                float3 ray :TEXCOORD1;
 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
@@ -81,23 +80,10 @@
 
                 float2 screenPos = v.vertex.xy / v.vertex.w *_ScreenParams.x;
                 screenPos.y *= _ScreenParams.y / _ScreenParams.x;
-                //o.vertex = float4(screenPos, 0, 1);
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = float4(screenPos, 0, 1);
+                // o.vertex = UnityObjectToClipPos(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, o.vertex);
                 o.screenPos = ComputeScreenPos(o.vertex);
-
-                float2 sp = o.screenPos.xy/o.screenPos.w;
-
-                #if UNITY_SINGLE_PASS_STEREO
-                    float4 scaleOffset = unity_StereoScaleOffset[unity_StereoEyeIndex];
-                    sp = (sp - scaleOffset.zw) / scaleOffset.xy;
-                #endif
-
-                sp = sp * 2.0 - 1.0;
-
-                float far = _ProjectionParams.z;
-                float3 clipVec = float3(sp.xy,1.0) * far;
-                o.ray = mul(unity_CameraInvProjection,clipVec.xyzz).xyz;
                 return o;
             }
 
@@ -168,15 +154,11 @@
 
                 float3 nearPlanePos = _WorldSpaceCameraPos + NearPlaneDistance(i.screenPos) * normalize(rd);
                 ray.origin = nearPlanePos;
-                ray.origin = i.worldPos;
 
-                float4 sp = i.screenPos;
-                sp.xy /= sp.w;
-                float depth = Linear01Depth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture,sp));
-                float3 viewPos = i.ray * depth;
-                float3 pos = mul(UNITY_MATRIX_I_V, float4(viewPos,1)).xyz;
-
-                ray.tmax = length(pos - ray.origin);
+                float depth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.screenPos.xy / i.screenPos.w));
+				float3 worldPos = depth * normalize(rd) / dot(normalize(rd),- UNITY_MATRIX_V[2].xyz) + _WorldSpaceCameraPos;
+                float tmax2 = length(ray.origin - worldPos);
+                ray.tmax = tmax2;
 
                 col = trace(ray);
 
